@@ -1,7 +1,6 @@
 #pragma once
 
-const char *const gethtml = R"(
-HTTP/1.1 200 OK
+const char *const gethtml = R"(HTTP/1.1 200 OK
 Content-Type: text/html; charset=UTF-8
 
 <!DOCTYPE html>
@@ -46,8 +45,7 @@ Content-Type: text/html; charset=UTF-8
 </html>
 )";
 
-const char *const postheader = R"(
-HTTP/1.1 200 OK
+const char *const postheader = R"(HTTP/1.1 200 OK
 Content-Type: text/plain; charset=UTF-8
 
 )";

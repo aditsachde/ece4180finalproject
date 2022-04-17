@@ -53,6 +53,12 @@ int main() {
 
   TCPSocket sock;
 
+  // Start filtering thread
+  filterthread.start(filter_thread);
+  filterthread.set_priority(osPriorityHigh);
+
+reset:
+
   status = sock.open(&eth);
   pc.printf("Opened socket on eth with status: %d\n", status);
 
@@ -62,13 +68,16 @@ int main() {
   status = sock.listen();
   pc.printf("Listening on socket with status: %d\n", status);
 
-  // Start filtering thread
-  filterthread.start(filter_thread);
-  filterthread.set_priority(osPriorityHigh);
-
   while (true) {
     TCPSocket *client = sock.accept(&status);
     pc.printf("Accepted client  with status: %d\n", status);
+
+    if (status < 0) {
+      // Sometimes we start to run into some odd issues.
+      // In this case, we reset the listening socket 
+      sock.close();
+      goto reset;
+    }
 
     char method;
 
@@ -98,6 +107,7 @@ int main() {
     }
     pc.printf("with status: %d\n", status);
 
+  cleanup:
     status = client->close();
     pc.printf("Closed client socket with status: %d\n", status);
   }
