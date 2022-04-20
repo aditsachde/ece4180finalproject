@@ -6,12 +6,12 @@
 #define RAD_TO_DEG (180 / PI)
 
 class Quaternion {
+public:
   float w;
   float x;
   float y;
   float z;
 
-public:
   inline Quaternion(float w, float x, float y, float z);
   inline void mult(Quaternion q);
   inline void scale(float scalar);
@@ -36,10 +36,10 @@ inline Quaternion::Quaternion(float w, float x, float y, float z) {
 };
 
 inline void Quaternion::mult(Quaternion q) {
-  float pw = w * w - x * x - y * y - z * z;
-  float px = w * x + x * w + y * z - z * y;
-  float py = w * y - x * z + y * w + z * x;
-  float pz = w * z + x * y - y * x + z * w;
+  float pw = w * q.w - x * q.x - y * q.y - z * q.z;
+  float px = w * q.x + x * q.w + y * q.z - z * q.y;
+  float py = w * q.y - x * q.z + y * q.w + z * q.x;
+  float pz = w * q.z + x * q.y - y * q.x + z * q.w;
 
   w = pw;
   x = px;

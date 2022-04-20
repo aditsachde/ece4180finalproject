@@ -39,7 +39,7 @@ Content-Type: text/html; charset=UTF-8
         document.getElementById("roll").textContent = roll;
         document.getElementById("pitch").textContent = pitch;
         document.getElementById("yaw").textContent = yaw;
-      }, 500);
+      }, 1000);
     </script>
   </body>
 </html>

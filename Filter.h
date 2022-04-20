@@ -1,13 +1,14 @@
 #pragma once
 
 #include "Quaternion.h"
+#include "Serial.h"
 
-#define TS_MS 100 // 100 millisecond step
+#define TS_MS 5 // millisecond step
 
 class Filter {
+public:
   Quaternion state = Quaternion(1.0f, 0.0f, 0.0f, 0.0f);
 
-public:
   void step(float ax, float ay, float az, float gx, float gy, float gz);
 
   // This is a function of the Quaternion class

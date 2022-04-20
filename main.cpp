@@ -40,7 +40,7 @@ int main() {
   }
 
   pc.printf("Calibrating IMU\n");
-  imu.calibration();
+  imu.calibrate(1);
 
   nsapi_error_t status;
   pc.printf("Initializing mbed ethernet\n");
@@ -74,7 +74,7 @@ reset:
 
     if (status < 0) {
       // Sometimes we start to run into some odd issues.
-      // In this case, we reset the listening socket 
+      // In this case, we reset the listening socket
       sock.close();
       goto reset;
     }
@@ -116,11 +116,17 @@ reset:
 void filter_thread(void) {
   while (true) {
     ThisThread::sleep_for(TS_MS);
-    pc.printf("Running filter step");
+    // pc.printf("Running filter step\n");
     imu.readAccel();
     imu.readGyro();
     filtermutex.lock();
-    filter.step(imu.ax, imu.ay, imu.az, imu.gx, imu.gy, imu.gz);
+    filter.step(imu.calcAccel(imu.ax), imu.calcAccel(imu.ay),
+                imu.calcAccel(imu.az), imu.calcGyro(imu.gx) * DEG_TO_RAD,
+                imu.calcGyro(imu.gy) * DEG_TO_RAD,
+                imu.calcGyro(imu.gz) * DEG_TO_RAD);
     filtermutex.unlock();
+    // pc.printf("Running step, gyro %f, %f, %f, %f, %f, %f, %f\n", imu.gx,
+    //           imu.gy, imu.gz, filter.state.w, filter.state.x, filter.state.y,
+    //           filter.state.z);
   }
 }
