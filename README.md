@@ -32,6 +32,10 @@ Our implementation uses IMU and an ethernet connection to display the real time 
 <img width="178" alt="image" src="https://user-images.githubusercontent.com/61746589/165409733-cbef4fcb-86dd-4c78-aae2-972beff941e8.png"> 
 <img width="187" alt="image" src="https://user-images.githubusercontent.com/61746589/165398851-032c4776-c351-44d8-8462-a3c286d3f17f.png">
 
+### Schematic and Final Design
+<img width="400" alt="image" src="https://user-images.githubusercontent.com/61746589/165412891-d5a6c617-780c-40e2-9a77-5ca26e5b5cd7.png">
+<img width="200" alt="image" src="https://user-images.githubusercontent.com/61746589/165412936-377efc39-786a-4140-afe1-2e7739ef688b.png">
+
 
 ## Software
 - Madgwick Filter
@@ -40,6 +44,9 @@ Our implementation uses IMU and an ethernet connection to display the real time 
 - HTTP server that supports GET and POST
 - Remote Access
 - Utilizes cloud infrastructure from Cloudflare
+### Website Demo
+<img width="529" alt="image" src="https://user-images.githubusercontent.com/61746589/165414752-313a4dc4-3bd5-4256-9f5b-e49d2f98db5e.png">
+
 
 # Results
 - Works pretty well for pitch and yaw
