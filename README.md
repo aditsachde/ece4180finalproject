@@ -4,20 +4,17 @@
 ### Centralized AHRS System
 We were tasked with designing a project utilizing the skills and knowledge taught in ECE 4180 Embedded Systems.
 
-Our Project is based loosely on the Georgia Tech Experimental Rocketry (GTXR) team's off the shelf amatuer rocketry flight computers which implements an ethernet network onboard the rocket that is also connected to the ground network while on the launch pad. 
+Our project is based loosely on the Georgia Tech Experimental Rocketry (GTXR) team's flight computers, which utilize a ethernet network onboard the rocket. This network is also connected to the ground network while on the launch pad. 
 
-
-Our implementation uses IMU and an ethernet connection to display the real time orientation of the mbed device on a website. 
+Our implementation uses IMU and an ethernet connection to display the real time attitude of the mbed device on a website, and provides an API to allow other devices to query and use the current attitude. Many systems require access to the attitude of the launch vehicle, however the IMUs used are very expensive. This setup allows a single IMU to be used without sacrificing access to data.
 
 ### Features
 
-- Obtains the orientation of the device, we will implement a Mahony or Madgwick to fuse the various sensors on the LSM9DS1 chip and get better data.
+- Obtains the orientation of the device, using a Madgwick to fuse the various sensors on the LSM9DS1 chip and get better data.
 
-- Displays the website, we will use a point to point ethernet link between a PC and the mbed. This website will display the orientation of the mbed as calculated by the IMU filter. It will also have a refresh mechanism to ensure that the orientation is automatically updated without requiring user interaction.
+- Displays the website over an ethernet link between a PC and the mbed. This website displays the orientation of the mbed as calculated by the Madgwick filter. It also has a refresh mechanism to ensure that the orientation is automatically updated without requiring user interaction.
 
-  - These two functionalities will be implemented as separated threads, using a mutex or similar coordination mechanism to access the device orientation, which both functions need to read or update.
-
-- Demonstrates this being integrated into a larger system, we plan to add an additional mbed or raspberry pi to the network. This device will query the mbed and have a simple demo, such as turning on an LED when the mbed is horizontal.
+- Provides an API, used by the example terminal based project in the `api_demo` folder.
 
 ## Hardware
 - MBED Microcontroller LPC1768
@@ -39,23 +36,22 @@ Our implementation uses IMU and an ethernet connection to display the real time 
 
 ## Software
 - Madgwick Filter
-- Implemented with C++ classes
-- Website
-- HTTP server that supports GET and POST
+  - This filter is implemented with C++ classes, making it far easier to integrate into other programs.
+- HTTP server
+  - The server implements both `GET` and `POST` requests.
+  - `GET` is used to serve the website
+  - `POST` is used to provide the realtime API
 - Remote Access
-- Utilizes cloud infrastructure from Cloudflare
+  - Utilizes Cloudflare tunnel, running on a PC with network access to the mbed as a bridge.
+  - This solution also allows the website to be accessed with a url (https://aprs.koven.dev) instead of an IP address.
+
 ### Website Demo
 <img width="529" alt="image" src="https://user-images.githubusercontent.com/61746589/165414752-313a4dc4-3bd5-4256-9f5b-e49d2f98db5e.png">
 
 
 # Results
-- Works pretty well for pitch and yaw
+- The filter provides accurate data for pitch and yaw
+  - The filter does not integrate the magnetometer, resulting in an inaccurate roll axis. This is because the axis is perpendicular to the gravity vector.
+  - The filter lags slightly. It stabilizes to the correct attitude, but could stablize faster if it was better tuned to the particular hardware.
 - API is simple and easy to use
-
-- Extract filter into separate library
-- Calibrate to improve response times
-- Integrate magnetometer
-
-
-
-
+  - It does not use the most appropriate HTTP method, but is an acceptable tradeoff for simplicity of implementation.
