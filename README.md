@@ -1,4 +1,5 @@
 # ece4180finalproject
+By Micaiah Adeoba(A), Lindsey Lubin (A), Adit Sachde (A)
 
 ## About 
 ### Centralized AHRS System
